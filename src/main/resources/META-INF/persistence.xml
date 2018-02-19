@@ -7,7 +7,7 @@
       <!--
         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://a4alarms.ccbaz5k8ib32.us-east-2.rds.amazonaws.com:3306/usermanager?zeroDateTimeBehavior=convertToNull"/>
       -->
-        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/usermanager?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://a4alarms.ccbaz5k8ib32.us-east-2.rds.amazonaws.com:3306/usermanager"/>
       <property name="javax.persistence.jdbc.user" value="user"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value="0verl00k"/>

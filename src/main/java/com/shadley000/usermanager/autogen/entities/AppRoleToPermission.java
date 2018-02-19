@@ -24,7 +24,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author shadl
  */
 @Entity
-@Table(name = "app_role_to_permission")
+//@Table(name = "app_role_to_permission")
+@Table(name = "APP_ROLE_TO_PERMISSION")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AppRoleToPermission.findAll", query = "SELECT a FROM AppRoleToPermission a")

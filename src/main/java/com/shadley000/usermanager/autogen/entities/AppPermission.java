@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author shadl
  */
 @Entity
-@Table(name = "app_permission")
+@Table(name = "APP_PERMISSION")
+//@Table(name = "app_permission")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AppPermission.findAll", query = "SELECT a FROM AppPermission a")

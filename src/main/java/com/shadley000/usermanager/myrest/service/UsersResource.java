@@ -18,7 +18,11 @@ import com.shadley000.usermanager.autogen.entities.AppRoleToUsers;
 import com.shadley000.usermanager.autogen.entities.AppUser;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
@@ -28,22 +32,31 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author shadl
  */
-
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UsersResource {
+
+    protected Logger logger() {
+        return Logger.getLogger(UsersResource.class.getName());
+    }
+
     private EntityManagerFactory getEntityManagerFactory() throws NamingException {
         return (EntityManagerFactory) new InitialContext().lookup("java:comp/env/persistence-factory");
     }
 
-    private AppUserJpaController getJpaController() {
+    private AppUserJpaController getUserJpaController() {
         try {
             UserTransaction utx = (UserTransaction) new InitialContext().lookup("java:comp/UserTransaction");
             return new AppUserJpaController(utx, getEntityManagerFactory());
@@ -51,7 +64,7 @@ public class UsersResource {
             throw new RuntimeException(ex);
         }
     }
-       
+
     private AppRoleJpaController getAppRoleJpaController() {
         try {
             UserTransaction utx = (UserTransaction) new InitialContext().lookup("java:comp/UserTransaction");
@@ -69,14 +82,14 @@ public class UsersResource {
             throw new RuntimeException(ex);
         }
     }
-    
+
     private AppUserBean createAppUserBean(AppUser appUserEntity) {
         AppUserBean appUserBean = new AppUserBean();
         appUserBean.setId(appUserEntity.getId());
         appUserBean.setLogin(appUserEntity.getLogin());
         appUserBean.setFirstName(appUserEntity.getFirstName());
-        
-        appUserBean.setLastName(appUserEntity.getLastName());        
+
+        appUserBean.setLastName(appUserEntity.getLastName());
         appUserBean.setEmail(appUserEntity.getEmail());
 
         Collection<AppRoleToUsers> appRoleToUsers = appUserEntity.getAppRoleToUsersCollection();
@@ -113,51 +126,114 @@ public class UsersResource {
 
     public UsersResource() {
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<AppUserBean> get() {
-        List<AppUser> appUsers = getJpaController().findAppUserEntities();
+    public Response get() {
+        logger().log(Level.INFO, "get");
+        List<AppUser> appUsers = getUserJpaController().findAppUserEntities();
         List<AppUserBean> appUserBeans = new ArrayList<>();
         for (AppUser appUserEntity : appUsers) {
             appUserBeans.add(createAppUserBean(appUserEntity));
         }
-        return appUserBeans;
+        return Response.ok(appUserBeans, MediaType.APPLICATION_JSON)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
+                .build();
     }
 
     @GET
     @Path("/{id}")
-    public AppUserBean getById(@PathParam("id") int id) {
-        return createAppUserBean(getJpaController().findAppUser(id));
+    public Response getById(@PathParam("id") int id) {
+        logger().log(Level.INFO, "getById " + id);
+        return Response.ok(createAppUserBean(getUserJpaController().findAppUser(id)), MediaType.APPLICATION_JSON)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
+                .build();
     }
 
     @GET
     @Path("/{id}/roles")
-    public List<AppRoleBean> getRoles(@PathParam("id") int id) {
-        AppUser appUserEntity = getJpaController().findAppUser(id);
+    public Response getRoles(@PathParam("id") int id) {
+        logger().log(Level.INFO, "getRoles " + id);
+        AppUser appUserEntity = getUserJpaController().findAppUser(id);
         AppUserBean appUserBean = createAppUserBean(appUserEntity);
-        return appUserBean.getRoleBeans();
+        return Response.ok(appUserBean.getRoleBeans(), MediaType.APPLICATION_JSON)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
+                .build();
     }
 
     @GET
     @Path("/{id}/roles/{roleid}")
-    public AppRoleBean getRole(@PathParam("id") int id, @PathParam("roleid") int roleId) {
+    public Response getRole(@PathParam("id") int id, @PathParam("roleid") int roleId) {
+        logger().log(Level.INFO, "getRole " + id + " " + roleId);
         AppRole appRole = getAppRoleJpaController().findAppRole(roleId);
-        return createAppRoleBean(appRole);
+        return Response.ok(createAppRoleBean(appRole), MediaType.APPLICATION_JSON)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
+                .build();
     }
 
     @GET
     @Path("/{id}/roles/{roleid}/permissions")
-    public List<AppPermissionBean> getRolePermissions(@PathParam("id") int id, @PathParam("roleid") int roleId) {
+    public Response getRolePermissions(@PathParam("id") int id, @PathParam("roleid") int roleId) {
+        logger().log(Level.INFO, "getRolePermissions " + id + " " + roleId);
         AppRole appRole = getAppRoleJpaController().findAppRole(roleId);
-        return createAppRoleBean(appRole).getAppPermissionBeans();
+
+        return Response.ok(createAppRoleBean(appRole).getAppPermissionBeans(), MediaType.APPLICATION_JSON)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
+                .build();
     }
 
     @GET
     @Path("/{id}/roles/{roleid}/permissions/{idpermissions}")
-    public AppPermissionBean getRolePermissions(@PathParam("id") int id, @PathParam("roleid") int roleId, @PathParam("idpermissions") int permissionsId) {
+    public Response getRolePermissions(@PathParam("id") int id, @PathParam("roleid") int roleId, @PathParam("idpermissions") int permissionsId) {
+        logger().log(Level.INFO, "getRolePermissions " + id + " " + roleId + " " + permissionsId);
         AppPermission appPermission = getAppPermissionJpaController().findAppPermission(permissionsId);
-        return createAppPermissionBean(appPermission);
+        return Response.ok(createAppPermissionBean(appPermission), MediaType.APPLICATION_JSON)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
+                .build();
     }
-    
+
+    @GET
+    @Path("/auth/{login}")
+    public Response getPermissionsByLogin(@PathParam("login") String login,
+            @QueryParam("password") String password,
+            @Context HttpServletRequest requestContext) {
+        
+
+        logger().log(Level.INFO, "getRolePermissions " + login + " " + password);
+        Set<Integer> permissionSet = new HashSet<>();
+
+        //search for matching login password
+        List<AppUser> appUserEntityList = getUserJpaController().findAppUseIDByLogin(login);
+
+        if (appUserEntityList.size() > 0) {
+            AppUser appUserEntity = appUserEntityList.get(0);
+            if (appUserEntity.getUserPassword().equals(password)) {
+                Collection<AppRoleToUsers> appRoleToUsers = appUserEntity.getAppRoleToUsersCollection();
+                for (AppRoleToUsers appRoleToUser : appRoleToUsers) {
+                    AppRole appRole = appRoleToUser.getIdAppRole();
+                    for (AppRoleToPermission appRoleToPermission : appRole.getAppRoleToPermissionCollection()) {
+                        permissionSet.add(appRoleToPermission.getId());
+                    }
+                }
+            } else {
+                logger().log(Level.WARNING, "Failed password from "+requestContext.getRemoteAddr());
+                return Response.status(Status.UNAUTHORIZED).build();
+            }
+        } else {
+            logger().log(Level.WARNING, "Failed user from "+requestContext.getRemoteAddr());
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(permissionSet, MediaType.APPLICATION_JSON)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
+                .build();
+
+    }
 }

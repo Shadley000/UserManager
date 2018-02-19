@@ -6,7 +6,7 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-01-15T14:36:11")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-18T22:00:46")
 @StaticMetamodel(AppRoleToPermission.class)
 public class AppRoleToPermission_ { 
 
