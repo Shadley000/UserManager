@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="com.shadley000_UserManager_war_1.0-SNAPSHOTPU" transaction-type="JTA">
+    <jta-data-source>java:app/usermanager</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <!--
+        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://a4alarms.ccbaz5k8ib32.us-east-2.rds.amazonaws.com:3306/usermanager?zeroDateTimeBehavior=convertToNull"/>
+      -->
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://a4alarms.ccbaz5k8ib32.us-east-2.rds.amazonaws.com:3306/usermanager"/>
+      <property name="javax.persistence.jdbc.user" value="user"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="0verl00k"/>
+    </properties>
+  </persistence-unit>
+</persistence>
