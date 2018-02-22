@@ -1,10 +1,16 @@
 package com.shadley000.usermanager.tokenmanager;
 
+import com.shadley000.usermanager.autogen.controller.AppUserJpaController;
+import com.shadley000.usermanager.autogen.entities.AppUser;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManagerFactory;
+import javax.transaction.UserTransaction;
 
 public class TokenManager implements Runnable {
 
@@ -18,6 +24,19 @@ public class TokenManager implements Runnable {
 
     protected Map<Long, Token> tokenIdToToken = null;
     protected Map<Long, Token> userIdToToken = null;
+
+    private EntityManagerFactory getEntityManagerFactory() throws NamingException {
+        return (EntityManagerFactory) new InitialContext().lookup("java:comp/env/persistence-factory");
+    }
+
+    private AppUserJpaController getUserJpaController() {
+        try {
+            UserTransaction utx = (UserTransaction) new InitialContext().lookup("java:comp/UserTransaction");
+            return new AppUserJpaController(utx, getEntityManagerFactory());
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     public static void gracefulStop() {
         done = true;
@@ -39,7 +58,6 @@ public class TokenManager implements Runnable {
     }
 
     synchronized public Long getToken(String login, String password) {
-
         Long userId = loadUserId(login, password);
         //if valid create and register token
         if (userId != null) {
@@ -63,27 +81,32 @@ public class TokenManager implements Runnable {
             return null;
         }
         token.touch();
-
         return token.getUserId();
-
     }
 
     synchronized public Long getTimeLeft(long tokenId) {
         Token token = tokenIdToToken.get(tokenId);
-
         if (token == null || token.isExpired()) {
             return null;
         }
-
         return token.getTimeLeft();
     }
 
     private Long loadUserId(String login, String password) {   //lookup and validate user from database
-        if (login.equals("shadley000") && password.equals("password")) {
-            return 9L;
-        } else {
-            return null;
+
+        List<AppUser> matchingAppUsers = getUserJpaController().findAppUseIDByLoginPassword(login, password);
+        if (matchingAppUsers != null) {
+            if (matchingAppUsers.size() == 0) {
+                return null;
+            } else if (matchingAppUsers.size() == 1) {
+                return new Long(matchingAppUsers.get(0).getId());
+            } else if (matchingAppUsers.size() > 1) {
+                System.out.println("Error: multiple logins for " + login);
+                return null;
+            }
         }
+        System.out.println("Error: no resultset for TokenManager.loadUserId(" + login + ")");
+        return null;
     }
 
     @Override

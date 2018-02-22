@@ -1,5 +1,6 @@
 package com.shadley000.usermanager.myrest.service;
 
+import com.shadley000.usermanager.myrest.ErrorMessage;
 import com.shadley000.usermanager.tokenmanager.TokenManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,11 +31,13 @@ public class TokenResource {
         Long token = tokenManager.getToken(login, password);
         if(token!=null){
             logger().log(Level.INFO, "successful login from "+login);
-            return Response.ok().build();
+            return Response.ok(token).build();
         }
         else {
             logger().log(Level.INFO, "failed login from "+login);
-            return Response.noContent().build();
+            ErrorMessage message = new ErrorMessage("404","code","failed login from "+login,"try another password");
+            return Response.noContent().entity("{'message':'No matching login password found'")
+    				.type(MediaType.APPLICATION_JSON).build();
         }
     }
 
