@@ -1,6 +1,6 @@
 package com.shadley000.usermanager.tokenmanager;
 
-public class Token {
+class Token {
     long token;
     long userId;
     long createTime;
@@ -9,8 +9,9 @@ public class Token {
 
     public Token(long userId){
         this.userId = userId;
-        this.token = (long)(Math.random()*Long.MAX_VALUE);
-        rebirth();
+        this.token = TokenManager.random.nextLong();
+        createTime = System.currentTimeMillis();
+        lastTouchTime = System.currentTimeMillis();
     }
 
     public void rebirth()  {
