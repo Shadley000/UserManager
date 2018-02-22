@@ -198,42 +198,5 @@ public class UsersResource {
                 .build();
     }
 
-    @GET
-    @Path("/auth/{login}")
-    public Response getPermissionsByLogin(@PathParam("login") String login,
-            @QueryParam("password") String password,
-            @Context HttpServletRequest requestContext) {
-        
-
-        logger().log(Level.INFO, "getRolePermissions " + login + " " + password);
-        Set<Integer> permissionSet = new HashSet<>();
-
-        //search for matching login password
-        List<AppUser> appUserEntityList = getUserJpaController().findAppUseIDByLogin(login);
-
-        if (appUserEntityList.size() > 0) {
-            AppUser appUserEntity = appUserEntityList.get(0);
-            if (appUserEntity.getUserPassword().equals(password)) {
-                Collection<AppRoleToUsers> appRoleToUsers = appUserEntity.getAppRoleToUsersCollection();
-                for (AppRoleToUsers appRoleToUser : appRoleToUsers) {
-                    AppRole appRole = appRoleToUser.getIdAppRole();
-                    for (AppRoleToPermission appRoleToPermission : appRole.getAppRoleToPermissionCollection()) {
-                        permissionSet.add(appRoleToPermission.getId());
-                    }
-                }
-            } else {
-                logger().log(Level.WARNING, "Failed password from "+requestContext.getRemoteAddr());
-                return Response.status(Status.UNAUTHORIZED).build();
-            }
-        } else {
-            logger().log(Level.WARNING, "Failed user from "+requestContext.getRemoteAddr());
-            return Response.status(Status.NOT_FOUND).build();
-        }
-
-        return Response.ok(permissionSet, MediaType.APPLICATION_JSON)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
-                .build();
-
-    }
+    
 }
