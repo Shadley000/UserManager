@@ -24,7 +24,7 @@ class Token {
     }
 
     public boolean isExpired() {
-        if((System.currentTimeMillis()-createTime) > TokenManager.DEATH_TIME) return true;
+       // if((System.currentTimeMillis()-createTime) > TokenManager.DEATH_TIME) return true;
         return (System.currentTimeMillis()-lastTouchTime)>TokenManager.EXPIRE_TIME;
     }
 

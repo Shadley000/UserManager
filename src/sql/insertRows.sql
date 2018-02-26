@@ -1,98 +1,63 @@
-INSERT INTO APP_USER (ID,LOGIN,USER_PASSWORD,FIRST_NAME,LAST_NAME,EMAIL) VALUES (1,"shadley000","password1","Stephen,Hadley","StephenJHadley@gmail.com");
-INSERT INTO APP_USER (ID,LOGIN,USER_PASSWORD,FIRST_NAME,LAST_NAME,EMAIL) VALUES (2,"anniemouse","password","Annie,Mouse","noreply@gmail.com");
-INSERT INTO APP_USER (ID,LOGIN,USER_PASSWORD,FIRST_NAME,LAST_NAME,EMAIL) VALUES (3,"jdoe","password","John,Doe","noreply@gmail.com");
-INSERT INTO APP_USER (ID,LOGIN,USER_PASSWORD,FIRST_NAME,LAST_NAME,EMAIL) VALUES (4,"gameadmin","password1","AGood","Friend","noreply@gmail.com");
-INSERT INTO APP_USER (ID,LOGIN,USER_PASSWORD,FIRST_NAME,LAST_NAME,EMAIL) VALUES (5,"guest","password","guest","user","noreply@gmail.com");
-INSERT INTO APP_USER (ID,LOGIN,USER_PASSWORD,FIRST_NAME,LAST_NAME,EMAIL) VALUES (6,"blackrhino","diamond123","Mike,Crawford","blackrhino_electsupt@dodi.com");
-INSERT INTO APP_USER (ID,LOGIN,USER_PASSWORD,FIRST_NAME,LAST_NAME,EMAIL) VALUES (7,"blacklion","diamond123","hotrod","blacklion_electsupt@dodi.com");
-INSERT INTO APP_USER (ID,LOGIN,USER_PASSWORD,FIRST_NAME,LAST_NAME,EMAIL) VALUES (8,"tgatlin","hess123","Terry,Gatlin","tgatlin@hess.com");
+INSERT INTO role_type (nname , description) VALUES ("Administrator",	"total control");
+INSERT INTO role_type (nname , description) VALUES ("Super User",		"all user functions");
+INSERT INTO role_type (nname , description) VALUES ("User",				"normal functions");
+INSERT INTO role_type (nname , description) VALUES ("Guest",			"limited access");
+INSERT INTO role_type (nname , description) VALUES ("Other",			"user defined");
 
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("shadley000",	"password1",			"Stephen", 	"Hadley",	"StephenJHadley@gmail.com");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("Installation",	"asdk134jhalj7542",		"System", 	"User",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("A6Alarms",		"asdkjhaa6087lj435",	"System", 	"User",	" ");
 
-INSERT INTO APPLICATION (ID,APPLICATION_NAME,DESCRIPTION) VALUES (1,"User Manager","");
-INSERT INTO APPLICATION (ID,APPLICATION_NAME,DESCRIPTION) VALUES (2,"A6 Alarm Manager Demo","");
-INSERT INTO APPLICATION (ID,APPLICATION_NAME,DESCRIPTION) VALUES (3,"A6 Alarm Manager Diamond","");
-INSERT INTO APPLICATION (ID,APPLICATION_NAME,DESCRIPTION) VALUES (4,"Galactic Warlord","");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("guest",			"password",			" ", 	" ",	"noreply@gmail.com");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("blackrhino",	"blackrhino123",	" ", 	" ",	"blackrhino_electsupt@dodi.com");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("blacklion",		"blacklion123",		" ",	" ",	"blacklion_electsupt@dodi.com");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("blackhawk",		"blackhawk123",		" ",	" ",	"blackhawk_electsupt@dodi.com");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("blackhornet",	"blackhornet123",	" ",	" ",	"blackhornet_electsupt@dodi.com");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("diamond",		"diamond123",		" ",	" ",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("hess",			"hess123",			" ",	" ",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("acmedrilling",	"password",			" ",	" ",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("bigoil",		"password",			" ",	" ",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("ship1",			"password",			" ",	" ",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("ship2",			"password",			" ",	" ",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("player1",		"password",			" ",	" ",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("player2",		"password",			" ",	" ",	" ");
+INSERT INTO users (login, user_password, first_name, last_name, email) VALUES ("player3",		"password",			" ",	" ",	" ");
 
+INSERT INTO application (nname) VALUES ("User Manager");
+INSERT INTO application (nname) VALUES ("A6 Alarm Manager");
+INSERT INTO application (nname) VALUES ("Galactic Warlord");
 
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (1,2,Administrator,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (2,3,Administrator,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (3,4,Administrator,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (4,1,Administrator,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (8,2,Guest,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (9,3,Guest,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (10,4,Guest,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (11,1,Guest,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (15,2,User,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (16,3,User,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (17,4,User,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (18,1,User,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (22,3,BlackRhinoUser,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (23,3,BlackLionUser,"");
-INSERT INTO APP_ROLE (ID,ID_APPLICATION,ROLE_NAME,DESCRIPTION) VALUES (24,2,DemoShipUser,"");
+-- generate normal roles for user_manager and galactic warlord
+INSERT INTO role (application_id, role_type_id, role_type_name, nname) 	select a.application_id, t.role_type_id, t.nname,t.nname	from application a, role_type t where a.nname = "User Manager" 	   and t.nname <> "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname) 	select a.application_id, t.role_type_id, t.nname,t.nname	from application a, role_type t where a.nname = "Galactic Warlord" and t.nname <> "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname) 	select a.application_id, t.role_type_id, t.nname,t.nname 	from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Administrator";        
 
+-- generate custom roles for A6
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "BlackRhino", 	'Ship'   		from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "BlackLion", 		'Ship'   		from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "BlackHawk", 		'Ship'   		from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "BlackHornet", 	'Ship'   		from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "Ship 1", 		'Ship'   		from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "Ship 2", 		'Ship'   		from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "Diamond", 		'Contractor'   	from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "Hess", 			'Operator'		from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "ACME Drilling", 	'Contractor'    from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";        
+INSERT INTO role (application_id, role_type_id, role_type_name, nname, ud1) 	select a.application_id, t.role_type_id, t.nname, "Big Oil", 		'Operator'    	from application a, role_type t where a.nname = "A6 Alarm Manager" AND t.nname = "Other";
+					
+-- gives me all role to everything
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND r.nname = "Administrator"	AND u.login = "shadley000";
+          
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "BlackRhino"		AND u.login = "blackrhino";   
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "BlackLion"		AND u.login = "blacklion";  
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "BlackHawk"		AND u.login = "blackhawk";  
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "BlackHornet"	AND u.login = "blackhornet";  
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "Ship 1"			AND u.login = "ship1"; 
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "Ship 2"			AND u.login = "ship2";    
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "Diamond"		AND u.login = "diamond"; 
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "Hess"			AND u.login = "hess";
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "ACME Drilling"	AND u.login = "acmedrilling";
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "A6 Alarm Manager" AND r.nname = "Big Oil"		AND u.login = "bigoil";       
 
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (1,2,"Administer","Full Access");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (2,3,"Administer","Full Access");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (3,4,"Administer","Full Access");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (4,1,"Administer","Full Access");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (8,2,"View","view most data");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (9,3,"View","view most data");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (10,4,"View","view most data");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (11,1,"View","view most data");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (15,2,"Edit","typical user privilege");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (16,3,"Edit","typical user privilege");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (17,4,"Edit","typical user privilege");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (18,1,"Edit","typical user privilege");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (22,3,"Edit BlackRhino","Ship specific editing");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (23,3,"Edit BlackLion","Ship specific editing");
-INSERT INTO APP_PERMISSIONS (ID,ID_APPLICATION,PERMISSION_NAME,DESCRIPTION) VALUES (24,2,"Edit Demo Ship","Ship specific editing");
-
-
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (1,		1,	1);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (2,		1,	15);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (3,		1,	24);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (4,		1,	8);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (5,		2,	2);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (6,		2,	16);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (7,		2,	23);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (8,		2,	22);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (9,		2,	9);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (10,	3,	3);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (11,	3,	17);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (12,	3,	10);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (13,	4,	4);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (14,	4,	18);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (15,	4,	11);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (16,	8,	8);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (17,	9,	9);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (18,	10,	10);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (19,	11,	11);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (23,	15,	15);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (24,	15,	8);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (25,	16,	16);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (26,	16,	9);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (27,	17,	17);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (28,	17,	10);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (29,	18,	18);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (30,	18,	11);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (38,	22,	22);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (39,	23,	23);
-INSERT INTO APP_ROLE_TO_PERMISSION INTO (ID, ID_APP_ROLE, ID_APP_PERMISSION) VALUES (40,	24,	24);
-		
-
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (1,	1,	1);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (2,	1,	2);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (3,	1,	3);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (4,	1,	4);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (13,	2,	10);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (14,	3,	17);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (12,	4,	3);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (8,	5,	8);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (9,	5,	10);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (10,	5,	11);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (11,	5,	24);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (15,	6,	16);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (16,	6,	22);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (17,	7,	16);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (18,	7,	23);
-INSERT INTO APP_ROLE_TO_USERS (ID,ID_APP_USER,ID_APP_ROLE) VALUES (19,	8,	9);
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "Galactic Warlord" AND r.nname = "Guest"			AND u.login = "player1";    
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "Galactic Warlord" AND r.nname = "User"			AND u.login = "player2";   
+INSERT INTO role_to_users (application_id, role_id, users_id) select a.application_id, r.role_id, u.users_id from application a, role r, users u where	a.application_id = r.application_id	AND a.nname = "Galactic Warlord" AND r.nname = "Super User"		AND u.login = "player3";   

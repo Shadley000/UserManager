@@ -1,16 +1,17 @@
 package com.shadley000.usermanager.tokenmanager;
 
-import com.shadley000.usermanager.autogen.controller.AppUserJpaController;
-import com.shadley000.usermanager.autogen.entities.AppUser;
+import com.shadley000.userManagerClient.beans.Users;
+import com.shadley000.usermanager.controllers.SQLConnectionFactory;
+import com.shadley000.usermanager.controllers.UsersController;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TokenManager implements Runnable {
 
@@ -25,18 +26,7 @@ public class TokenManager implements Runnable {
     protected Map<Long, Token> tokenIdToToken = null;
     protected Map<Long, Token> userIdToToken = null;
 
-    private EntityManagerFactory getEntityManagerFactory() throws NamingException {
-        return (EntityManagerFactory) new InitialContext().lookup("java:comp/env/persistence-factory");
-    }
-
-    private AppUserJpaController getUserJpaController() {
-        try {
-            UserTransaction utx = (UserTransaction) new InitialContext().lookup("java:comp/UserTransaction");
-            return new AppUserJpaController(utx, getEntityManagerFactory());
-        } catch (NamingException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
+    UsersController userController;
 
     public static void gracefulStop() {
         done = true;
@@ -55,10 +45,19 @@ public class TokenManager implements Runnable {
     public TokenManager() {
         tokenIdToToken = new HashMap<>();
         userIdToToken = new HashMap<>();
+
+        Connection connection = null;
+        try {
+            connection = SQLConnectionFactory.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(TokenManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        userController = new UsersController(connection);
+
     }
 
-    synchronized public Long getToken(String login, String password) {
-        Long userId = loadUserId(login, password);
+    synchronized public Long getToken(String ipAddress, String login, String password) {
+        Long userId = loadUserId(ipAddress, login, password);
         //if valid create and register token
         if (userId != null) {
             Token token = userIdToToken.get(userId);
@@ -92,21 +91,19 @@ public class TokenManager implements Runnable {
         return token.getTimeLeft();
     }
 
-    private Long loadUserId(String login, String password) {   //lookup and validate user from database
+    private Long loadUserId(String ipAddress, String login, String password) {   //lookup and validate user from database
 
-        List<AppUser> matchingAppUsers = getUserJpaController().findAppUseIDByLoginPassword(login, password);
-        if (matchingAppUsers != null) {
-            if (matchingAppUsers.size() == 0) {
-                return null;
-            } else if (matchingAppUsers.size() == 1) {
-                return new Long(matchingAppUsers.get(0).getId());
-            } else if (matchingAppUsers.size() > 1) {
-                System.out.println("Error: multiple logins for " + login);
-                return null;
+        try {
+            Users users = userController.getUsers(ipAddress, login, password);
+            if (users != null) {
+                return users.getUsersId();
             }
+        } catch (Exception e) {
+
+            Logger.getLogger(TokenManager.class.getName()).log(Level.SEVERE, ("Error: no resultset for TokenManager.loadUserId(" + login + ")"), e);
         }
-        System.out.println("Error: no resultset for TokenManager.loadUserId(" + login + ")");
         return null;
+
     }
 
     @Override
