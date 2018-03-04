@@ -1,34 +1,49 @@
 package com.shadley000.usermanager.tokenmanager;
 
-class Token {
-    long token;
-    long userId;
+public class Token {
+
+    String token;
+    String userId;
     long createTime;
     long lastTouchTime;
+    String ipAddress;
 
-
-    public Token(long userId){
+    public Token(String ipAddress, String userId) {
+        this.ipAddress = ipAddress;
         this.userId = userId;
-        this.token = TokenManager.random.nextLong();
+        this.token = "z"+TokenManager.random.nextLong();
         createTime = System.currentTimeMillis();
         lastTouchTime = System.currentTimeMillis();
     }
 
-    public void rebirth()  {
+    public void rebirth() {
         createTime = System.currentTimeMillis();
         touch();
     }
 
-    public void touch()  {
+    public void touch() {
         lastTouchTime = System.currentTimeMillis();
     }
 
     public boolean isExpired() {
-       // if((System.currentTimeMillis()-createTime) > TokenManager.DEATH_TIME) return true;
-        return (System.currentTimeMillis()-lastTouchTime)>TokenManager.EXPIRE_TIME;
+        // if((System.currentTimeMillis()-createTime) > TokenManager.DEATH_TIME) return true;
+        return getTimeLeft() > 0;
+        //return false;
     }
 
-    public long getToken() {return token;}
-    public long getUserId() {return userId;}
-    public long getTimeLeft() {return (TokenManager.EXPIRE_TIME-System.currentTimeMillis()-lastTouchTime);}
+    public String getToken() {
+        return token;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public long getTimeLeft() {
+        return (TokenManager.EXPIRE_TIME - System.currentTimeMillis() - lastTouchTime);
+    }
 }

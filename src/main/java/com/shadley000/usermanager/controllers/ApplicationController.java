@@ -20,7 +20,7 @@ import java.util.List;
 public class ApplicationController {
 
     
-     public static final String SQL_GET_APPLICATIONS = "SELECT a.application_id, a.nname, a.decription FROM application a ";
+     public static final String SQL_GET_APPLICATIONS = "SELECT a.application_id, a.nname, a.description FROM application a ";
    
      public static final String SQL_GET_APPLICATIONS_BY_NAME = SQL_GET_APPLICATIONS + " WHERE nname = ? ";
      
@@ -31,7 +31,7 @@ public class ApplicationController {
             + "        and a.application_id = j.application_id       \n"
             + "        and u.users_id = j.users_id\n"
             + "        and r.role_id = j.role_id"
-            + "        and u.user_id = ? ";
+            + "        and u.users_id = ? ";
     
     Connection connection;
     
@@ -55,20 +55,21 @@ public class ApplicationController {
         return getApplications(stmt);
     }
     public Application getApplication(String name)  throws SQLException{
-        PreparedStatement stmt = connection.prepareStatement(SQL_GET_APPLICATIONS);
-        stmt.setString(0, name);
+        PreparedStatement stmt = connection.prepareStatement(SQL_GET_APPLICATIONS_BY_NAME);
+        stmt.setString(1, name);
         return getApplications(stmt).get(0);
     }
 
     public Application getApplication(long applicationId)  throws SQLException{
-        PreparedStatement stmt = connection.prepareStatement(SQL_GET_APPLICATIONS);
-        stmt.setLong(0, applicationId);
+        PreparedStatement stmt = connection.prepareStatement(SQL_GET_APPLICATIONS_BY_ID);
+        stmt.setLong(1, applicationId);
         return getApplications(stmt).get(0);
     }
     
     public List<Application> getApplicationsByUser(long userId)  throws SQLException{
-        PreparedStatement stmt = connection.prepareStatement(SQL_GET_APPLICATIONS);
-        stmt.setLong(0, userId);
+        PreparedStatement stmt = connection.prepareStatement(SQL_GET_APPLICATIONS_BY_USER_ID);
+        stmt.setLong(1, userId);
         return getApplications(stmt);
    }
+
 }
